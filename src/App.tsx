@@ -5,22 +5,28 @@ import AppRoutes from "./AppRoutes";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { me } from "./redux/slices/user";
 
+interface AppProps {
+  isLoggedIn: boolean;
+}
+
 function App() {
   const dispatch = useAppDispatch();
-  const isLoggedIn = useAppSelector((state) => !!state.user?.data?.id);
+  const isLoggedIn = useAppSelector(
+    (state) => !!state.user?.data?.id
+  ) as AppProps["isLoggedIn"];
 
   useEffect(() => {
-    const fetchMe = () => {
-      dispatch(me());
+    const fetchMe = async () => {
+      await dispatch(me());
     };
     fetchMe();
-  }, []);
+  }, [dispatch]);
 
-  console.log("isLoggedIn", isLoggedIn);
+  // console.log("isLoggedIn", isLoggedIn);
   return (
     <div>
-      <Navbar isAuthenticated={isLoggedIn} />
-      <AppRoutes isAuthenticated={isLoggedIn} />
+      <Navbar isLoggedIn={isLoggedIn} />
+      <AppRoutes isLoggedIn={isLoggedIn} />
     </div>
   );
 }

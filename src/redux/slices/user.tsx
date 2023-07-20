@@ -105,6 +105,7 @@ const login = createAsyncThunk(
 
 // Log Out Thunk
 const logout = createAsyncThunk("user/logout", async () => {
+  console.log("USER/LOGOUT THUNK HIT");
   try {
     const response = await axios.post("http://localhost:8080/auth/logout");
     if (!response.data) {
@@ -170,7 +171,7 @@ const userSlice = createSlice({
     });
     //Log Out Thunk Reducer+Error Handling
     builder.addCase(logout.fulfilled, (state) => {
-      state.data = null;
+      state.data = {};
     });
     builder.addCase(logout.rejected, (state, { error }) => {
       if (error) {
