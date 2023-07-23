@@ -6,12 +6,28 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import { BrowserRouter as Router } from "react-router-dom";
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
+/**
+ * Select the root div where the React app will be attached.
+ */
+const rootElement = document.getElementById("root") as HTMLElement;
+
+/**
+ * Create a root using ReactDOM.createRoot() for Concurrent Mode rendering.
+ * Concurrent Mode is a set of new features that help React apps stay responsive
+ * and gracefully adjust to the user’s device capabilities and network speed.
+ * As of September 2021, Concurrent Mode is experimental and not yet fully stable.
+ */
+const root = ReactDOM.createRoot(rootElement);
+
+/**
+ * Render the application.
+ *
+ * Wrap the application in <React.StrictMode> for highlighting potential problems in an application.
+ * Wrap the application in <Router> to enable React Router in the app.
+ * Wrap the application in <Provider> and pass the Redux store to make it available to all component.
+ */
 root.render(
   <React.StrictMode>
-    {/* @ts-ignore:next-line */}
     <Router>
       <Provider store={store}>
         <App />
@@ -19,8 +35,3 @@ root.render(
     </Router>
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-// reportWebVitals();

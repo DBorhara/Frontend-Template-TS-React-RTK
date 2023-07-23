@@ -1,31 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useAppDispatch } from "../redux/hooks";
 import { login } from "../redux/slices/user";
 
+// Define a CustomError interface to handle any errors that may occur during login
 interface CustomError {
   name: string;
   message: string;
   code: string;
 }
 
+// The Login component handles the user login process
 export default function Login() {
+  // Use useState hook for form inputs and error handling
   const [error, setError] = useState<CustomError | null>(null);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
+  // useAppDispatch hook to dispatch actions
   const dispatch = useAppDispatch();
 
-  const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    try {
-      e.preventDefault();
+  // Function to handle form submission
+  const handleLoginSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-      const userLogin = await dispatch(login({ email, password })).unwrap();
-      if (userLogin) {
-        console.log("userLogin", userLogin);
-      }
+    try {
+      // Dispatch login action with email and password
+      await dispatch(login({ email, password })).unwrap();
     } catch (error: any) {
+      // Set the error if login fails
       setError(error);
     }
   };
+
+  // Function to handle input change
+  const handleInputChange =
+    (setter: React.Dispatch<React.SetStateAction<string>>) =>
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setter(e.target.value);
+    };
+
   return (
     <div>
       <form onSubmit={handleLoginSubmit} name="login">
@@ -35,7 +48,7 @@ export default function Login() {
             type="text"
             placeholder="email"
             name="email"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleInputChange(setEmail)}
           />
         </div>
         <div>
@@ -44,13 +57,13 @@ export default function Login() {
             type="password"
             placeholder="password"
             name="password"
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handleInputChange(setPassword)}
           />
         </div>
         <div>
           <button type="submit">Login</button>
         </div>
-        {error && error.message && <div> {error.message} </div>}
+        {error && <div> {error.message} </div>}
       </form>
       <a href="http://localhost:8080/auth/google">Log in with Google</a>
     </div>

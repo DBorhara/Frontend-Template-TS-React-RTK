@@ -4,17 +4,37 @@ import Signup from "./pages/Signup";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import UserHome from "./pages/UserHome";
 
-export default function AppRoutes({ isLoggedIn }: { isLoggedIn: boolean }) {
+/**
+ * Interface for AppRoutes component props
+ */
+interface AppRoutesProps {
+  isLoggedIn: boolean;
+}
+
+/**
+ * AppRoutes component.
+ *
+ * Defines the routing for the app. Includes both public routes (accessible to all users)
+ * and protected routes (only accessible to logged-in users).
+ *
+ * @param {AppRoutesProps} props - The props that define whether the user is logged in.
+ */
+const AppRoutes: React.FC<AppRoutesProps> = ({ isLoggedIn }) => {
   return (
     <Routes>
-      {/*Public Routes go here*/}
+      {/* Public Routes */}
+      {/* The root path is left empty. Consider redirecting it to a landing or login page. */}
       <Route path="/" />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-      {/*Protected Routes go here*/}
+
+      {/* Protected Routes */}
+      {/* They are wrapped in a ProtectedRoute component that checks if the user is logged in. */}
       <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} />}>
         <Route path="/home" element={<UserHome />} />
       </Route>
     </Routes>
   );
-}
+};
+
+export default AppRoutes;
