@@ -21,8 +21,7 @@ function App() {
     };
     fetchMe();
   }, [dispatch]);
-
-  // console.log("isLoggedIn", isLoggedIn);
+g
   return (
     <div>
       <Navbar isLoggedIn={isLoggedIn} />
