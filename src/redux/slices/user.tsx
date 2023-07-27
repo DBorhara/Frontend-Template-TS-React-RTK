@@ -1,7 +1,9 @@
+// Import necessary libraries and types
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import axios from "axios";
 
+// Ensuring that cookies are sent with requests
 axios.defaults.withCredentials = true;
 if (process.env.NODE_ENV === "development") {
   axios.defaults.baseURL = process.env.REACT_APP_LOCAL_BACKEND_URL;
@@ -14,11 +16,13 @@ interface CustomError {
   code: string;
 }
 
+// Interface for user state
 interface UserState {
   data?: any;
   error?: CustomError | null;
 }
 
+// Initial state for user
 const initialState: UserState = {};
 console.log("process.env.NODE_ENV", process.env.NODE_ENV);
 // Thunks
@@ -49,7 +53,7 @@ const me = createAsyncThunk("user/me", async () => {
   }
 });
 
-// Sign Up Thunk
+// Thunk to sign up a new user
 const signup = createAsyncThunk(
   "user/signup",
   async ({ email, password }: { email: string; password: string }) => {
@@ -77,7 +81,7 @@ const signup = createAsyncThunk(
   }
 );
 
-// Log In Thunk
+// Thunk to log in a user
 const login = createAsyncThunk(
   "user/login",
   async ({ email, password }: { email: string; password: String }) => {
@@ -107,7 +111,7 @@ const login = createAsyncThunk(
   }
 );
 
-// Log Out Thunk
+// Thunk to log out a user
 const logout = createAsyncThunk("user/logout", async () => {
   console.log("USER/LOGOUT THUNK HIT");
   try {
@@ -130,83 +134,62 @@ const logout = createAsyncThunk("user/logout", async () => {
   }
 });
 
+// User slice for Redux store
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    //Log In Thunk Reducer+Error Handling
-    builder.addCase(
-      login.fulfilled,
-      (state, action: PayloadAction<UserState>) => {
-        const { payload } = action;
-        state.data = payload;
-      }
-    );
-    builder.addCase(login.rejected, (state, { error }) => {
-      if (error) {
-        state.error = error as CustomError;
-      } else {
-        state.error = {
+    // Handle fulfilled and rejected states for "me", "signup", "login", and "logout"
+    builder
+      .addCase(me.fulfilled, (state, action: PayloadAction<UserState>) => {
+        state.data = action.payload;
+        state.error = null;
+      })
+      .addCase(me.rejected, (state, { error }) => {
+        state.error = (error as CustomError) || {
           name: "Request Failed",
           message: "Error",
           code: "500",
         };
-      }
-    });
-    //Sign Up Thunk Reducer+Error Handling
-    builder.addCase(
-      signup.fulfilled,
-      (state, action: PayloadAction<UserState>) => {
-        const { payload } = action;
-        state.data = payload;
-      }
-    );
-    builder.addCase(signup.rejected, (state, { error }) => {
-      if (error) {
-        state.error = error as CustomError;
-      } else {
-        state.error = {
+      })
+      .addCase(signup.fulfilled, (state, action: PayloadAction<UserState>) => {
+        state.data = action.payload;
+        state.error = null;
+      })
+      .addCase(signup.rejected, (state, { error }) => {
+        state.error = (error as CustomError) || {
           name: "Request Failed",
           message: "Error",
           code: "500",
         };
-      }
-    });
-    //Log Out Thunk Reducer+Error Handling
-    builder.addCase(logout.fulfilled, (state) => {
-      state.data = {};
-    });
-    builder.addCase(logout.rejected, (state, { error }) => {
-      if (error) {
-        state.error = error as CustomError;
-      } else {
-        state.error = {
+      })
+      .addCase(login.fulfilled, (state, action: PayloadAction<UserState>) => {
+        state.data = action.payload;
+        state.error = null;
+      })
+      .addCase(login.rejected, (state, { error }) => {
+        state.error = (error as CustomError) || {
           name: "Request Failed",
           message: "Error",
           code: "500",
         };
-      }
-    });
-    // Fetch User Thunk Reducer+Error Handling
-    builder.addCase(me.fulfilled, (state, action: PayloadAction<UserState>) => {
-      const { payload } = action;
-      state.data = payload;
-    });
-    builder.addCase(me.rejected, (state, { error }) => {
-      if (error) {
-        state.error = error as CustomError;
-      } else {
-        state.error = {
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.data = {};
+        state.error = null;
+      })
+      .addCase(logout.rejected, (state, { error }) => {
+        state.error = (error as CustomError) || {
           name: "Request Failed",
           message: "Error",
           code: "500",
         };
-      }
-    });
+      });
   },
 });
 
+// Export thunks, types, and reducer
 export { login, signup, logout, me };
 export type { UserState };
 
