@@ -5,8 +5,11 @@ import axios from "axios";
 
 // Ensuring that cookies are sent with requests
 axios.defaults.withCredentials = true;
-
-// Types for custom error handling
+if (process.env.NODE_ENV === "development") {
+  axios.defaults.baseURL = process.env.REACT_APP_LOCAL_BACKEND_URL;
+} else {
+  axios.defaults.baseURL = process.env.REACT_APP_REMOTE_BACKEND_URL;
+}
 interface CustomError {
   name: string;
   message: string;
@@ -21,26 +24,60 @@ interface UserState {
 
 // Initial state for user
 const initialState: UserState = {};
+console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+// Thunks
 
-// Thunk to get current user data
+// Fetch user Thunk
 const me = createAsyncThunk("user/me", async () => {
-  const response = await axios.get("http://localhost:8080/auth/me", {
-    withCredentials: true,
-  });
-  if (!response.data) throw new Error("Error");
-  return response.data;
+  try {
+    const response = await axios.get("/auth/me", {
+      withCredentials: true,
+    });
+    console.log("ME response", response);
+    if (!response.data) {
+      console.log("NO RESPONSE DATA");
+      throw new Error("Error");
+    }
+    return response.data;
+  } catch (error) {
+    const {
+      response: { data, status },
+    } = error as unknown as {
+      response: { data: string; status: number };
+    };
+    throw {
+      name: "Request Failed",
+      message: data,
+      code: `${status}`,
+    };
+  }
 });
 
 // Thunk to sign up a new user
 const signup = createAsyncThunk(
   "user/signup",
   async ({ email, password }: { email: string; password: string }) => {
-    const response = await axios.post("http://localhost:8080/auth/signup", {
-      email,
-      password,
-    });
-    if (!response.data) throw new Error("User not created");
-    return response.data;
+    try {
+      const response = await axios.post("/auth/signup", {
+        email,
+        password,
+      });
+      if (!response.data) {
+        throw new Error("User not created");
+      }
+      return response.data;
+    } catch (error) {
+      const {
+        response: { data, status },
+      } = error as unknown as {
+        response: { data: string; status: number };
+      };
+      throw {
+        name: "Request Failed",
+        message: data,
+        code: `${status}`,
+      };
+    }
   }
 );
 
@@ -48,20 +85,53 @@ const signup = createAsyncThunk(
 const login = createAsyncThunk(
   "user/login",
   async ({ email, password }: { email: string; password: String }) => {
-    const response = await axios.post("http://localhost:8080/auth/login", {
-      email,
-      password,
-    });
-    if (!response.data) throw new Error("Error");
-    return response.data;
+    try {
+      const response = await axios.post("/auth/login", {
+        email,
+        password,
+      });
+      console.log("response", response);
+      if (!response.data) {
+        throw new Error("Error");
+      }
+      return response.data;
+    } catch (error) {
+      console.log("error", error);
+      const {
+        response: { data, status },
+      } = error as unknown as {
+        response: { data: string; status: number };
+      };
+      throw {
+        name: "Request Failed",
+        message: data,
+        code: `${status}`,
+      };
+    }
   }
 );
 
 // Thunk to log out a user
 const logout = createAsyncThunk("user/logout", async () => {
-  const response = await axios.post("http://localhost:8080/auth/logout");
-  if (!response.data) throw new Error("Error");
-  return response.data;
+  console.log("USER/LOGOUT THUNK HIT");
+  try {
+    const response = await axios.post("/auth/logout");
+    if (!response.data) {
+      throw new Error("Error");
+    }
+    return response.data;
+  } catch (error) {
+    const {
+      response: { data, status },
+    } = error as unknown as {
+      response: { data: string; status: number };
+    };
+    throw {
+      name: "Request Failed",
+      message: data,
+      code: `${status}`,
+    };
+  }
 });
 
 // User slice for Redux store

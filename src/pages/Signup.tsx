@@ -70,7 +70,15 @@ export default function Signup() {
         </div>
         {error && <div> {error.message} </div>}
       </form>
-      <a href="http://localhost:8080/auth/google">Sign up with Google</a>
+      <a
+        href={`${
+          process.env.NODE_ENV === "development"
+            ? process.env.REACT_APP_LOCAL_BACKEND_URL
+            : process.env.REACT_APP_REMOTE_BACKEND_URL
+        }/auth/google`}
+      >
+        Log in with Google
+      </a>
     </div>
   );
 }

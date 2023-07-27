@@ -32,7 +32,6 @@ function App() {
   useEffect(() => {
     dispatch(me());
   }, [dispatch]);
-
   return (
     <div>
       {/* Pass the isLoggedIn prop down to Navbar and AppRoutes */}
