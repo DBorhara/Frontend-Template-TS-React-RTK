@@ -9,7 +9,7 @@ interface PrivateRouteProps {
 // PrivateRoute component that checks if the user is logged in.
 // If the user is logged in, render the component that PrivateRoute is wrapping (Outlet component),
 // otherwise redirect the user to the /login route.
-export default function PrivateRoute({ isLoggedIn }: PrivateRouteProps) {
+export default function ProtectedRoute({ isLoggedIn }: PrivateRouteProps) {
   return isLoggedIn ? (
     <Outlet /> // If logged in, render the child components (i.e., render the outlet)
   ) : (
