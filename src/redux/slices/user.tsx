@@ -3,7 +3,11 @@ import type { RootState } from "../store";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
-
+if (process.env.NODE_ENV === "development") {
+  axios.defaults.baseURL = process.env.REACT_APP_LOCAL_BACKEND_URL;
+} else {
+  axios.defaults.baseURL = process.env.REACT_APP_REMOTE_BACKEND_URL;
+}
 interface CustomError {
   name: string;
   message: string;
@@ -16,13 +20,13 @@ interface UserState {
 }
 
 const initialState: UserState = {};
-
+console.log("process.env.NODE_ENV", process.env.NODE_ENV);
 // Thunks
 
 // Fetch user Thunk
 const me = createAsyncThunk("user/me", async () => {
   try {
-    const response = await axios.get("http://localhost:8080/auth/me", {
+    const response = await axios.get("/auth/me", {
       withCredentials: true,
     });
     console.log("ME response", response);
@@ -50,7 +54,7 @@ const signup = createAsyncThunk(
   "user/signup",
   async ({ email, password }: { email: string; password: string }) => {
     try {
-      const response = await axios.post("http://localhost:8080/auth/signup", {
+      const response = await axios.post("/auth/signup", {
         email,
         password,
       });
@@ -78,7 +82,7 @@ const login = createAsyncThunk(
   "user/login",
   async ({ email, password }: { email: string; password: String }) => {
     try {
-      const response = await axios.post("http://localhost:8080/auth/login", {
+      const response = await axios.post("/auth/login", {
         email,
         password,
       });
@@ -107,7 +111,7 @@ const login = createAsyncThunk(
 const logout = createAsyncThunk("user/logout", async () => {
   console.log("USER/LOGOUT THUNK HIT");
   try {
-    const response = await axios.post("http://localhost:8080/auth/logout");
+    const response = await axios.post("/auth/logout");
     if (!response.data) {
       throw new Error("Error");
     }
