@@ -25,6 +25,7 @@ interface UserState {
 // Initial state for user
 const initialState: UserState = {};
 console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+console.log("axios.defaults.baseURL", axios.defaults.baseURL);
 // Thunks
 
 // Fetch user Thunk

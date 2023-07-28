@@ -33,11 +33,11 @@ function App() {
     dispatch(me());
   }, [dispatch]);
   return (
-    <div>
+    <>
       {/* Pass the isLoggedIn prop down to Navbar and AppRoutes */}
       <Navbar isLoggedIn={isLoggedIn} />
       <AppRoutes isLoggedIn={isLoggedIn} />
-    </div>
+    </>
   );
 }
 
