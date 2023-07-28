@@ -24,8 +24,7 @@ interface UserState {
 
 // Initial state for user
 const initialState: UserState = {};
-console.log("process.env.NODE_ENV", process.env.NODE_ENV);
-console.log("axios.defaults.baseURL", axios.defaults.baseURL);
+
 // Thunks
 
 // Fetch user Thunk
@@ -34,9 +33,7 @@ const me = createAsyncThunk("user/me", async () => {
     const response = await axios.get("/auth/me", {
       withCredentials: true,
     });
-    console.log("ME response", response);
     if (!response.data) {
-      console.log("NO RESPONSE DATA");
       throw new Error("Error");
     }
     return response.data;
@@ -91,13 +88,11 @@ const login = createAsyncThunk(
         email,
         password,
       });
-      console.log("response", response);
       if (!response.data) {
         throw new Error("Error");
       }
       return response.data;
     } catch (error) {
-      console.log("error", error);
       const {
         response: { data, status },
       } = error as unknown as {
@@ -114,7 +109,6 @@ const login = createAsyncThunk(
 
 // Thunk to log out a user
 const logout = createAsyncThunk("user/logout", async () => {
-  console.log("USER/LOGOUT THUNK HIT");
   try {
     const response = await axios.post("/auth/logout");
     if (!response.data) {

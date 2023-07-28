@@ -27,9 +27,6 @@ export default function Signup() {
       // Dispatch the signup action with email and password
       const userSignup = await dispatch(signup({ email, password })).unwrap();
 
-      // Console.log the userSignup for debugging purposes (to be removed in production)
-      console.log("userSignup", userSignup);
-
       // TODO: Redirect to home page on successful signup
     } catch (error: any) {
       // If error occurs, set the error state
