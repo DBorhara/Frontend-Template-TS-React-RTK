@@ -42,9 +42,9 @@ export default function Signup() {
     };
 
   return (
-    <div className="w-full max-w-xs">
+    <div className="w-full flex flex-col items-center bg-white  rounded px-8 pt-6 pb-8 mb-4">
       <form
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        className="bg-white w-3/12 shadow-md rounded px-8 pt-6 pb-8 mb-4"
         onSubmit={handleSignupSubmit}
         name="signup"
       >
