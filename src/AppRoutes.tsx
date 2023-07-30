@@ -3,6 +3,8 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import UserHome from "./pages/UserHome";
+import PageNotFound from "./pages/PageNotFound";
+import Landing from "./pages/Landing";
 
 /**
  * Interface for AppRoutes component props
@@ -24,7 +26,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isLoggedIn }) => {
     <Routes>
       {/* Public Routes */}
       {/* The root path is left empty. Consider redirecting it to a landing or login page. */}
-      <Route path="/" />
+      <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
 
@@ -33,6 +35,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isLoggedIn }) => {
       <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} />}>
         <Route path="/home" element={<UserHome />} />
       </Route>
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 };

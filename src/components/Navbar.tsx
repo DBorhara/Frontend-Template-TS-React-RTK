@@ -29,14 +29,44 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn }) => {
    */
   if (isLoggedIn) {
     return (
-      <div>
-        <button type="button" onClick={() => navigate("/home")}>
-          Home
-        </button>
-        <button type="button" onClick={() => dispatch(logout())}>
-          Logout
-        </button>
-      </div>
+      <nav className="flex items-center justify-between flex-wrap bg-slate-400 p-6">
+        <div className="flex items-center flex-shrink-0 text-white mr-6">
+          <span className="font-semibold text-xl tracking-tight">
+            Front-End Template
+          </span>
+        </div>
+        {/* TODO: Fix for navbar collapse/uncollapse on mobile */}
+        {/* <div className="block lg:hidden">
+          <button className="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
+            <svg
+              className="fill-current h-3 w-3"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>Menu</title>
+              <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+            </svg>
+          </button>
+        </div> */}
+        <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+          <div className="text-sm lg:flex-grow">
+            <button
+              onClick={() => navigate("/home")}
+              className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+            >
+              Home
+            </button>
+            <button
+              type="button"
+              onClick={() => dispatch(logout())}
+              // href="#responsive-header"
+              className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+            >
+              Log Out
+            </button>
+          </div>
+        </div>
+      </nav>
     );
   }
 
@@ -46,14 +76,44 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn }) => {
    * Clicking 'Sign Up' navigates to the /signup route.
    */
   return (
-    <div>
-      <button type="button" onClick={() => navigate("/login")}>
-        Log In
-      </button>
-      <button type="button" onClick={() => navigate("/signup")}>
-        Sign Up
-      </button>
-    </div>
+    <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
+      <div className="flex items-center flex-shrink-0 text-white mr-6">
+        <span className="font-semibold text-xl tracking-tight">
+          Front-End Template
+        </span>
+      </div>
+      {/* TODO: Fix for navbar collapse/uncollapse on mobile */}
+      {/* <div className="block lg:hidden">
+        <button className="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
+          <svg
+            className="fill-current h-3 w-3"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title>Menu</title>
+            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+          </svg>
+        </button>
+      </div> */}
+      <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+        <div className="text-sm lg:flex-grow">
+          <button
+            onClick={() => navigate("/login")}
+            className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+          >
+            Login
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate("/signup")}
+            // href="#responsive-header"
+            className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+          >
+            Sign Up
+          </button>
+        </div>
+      </div>
+    </nav>
   );
 };
 
