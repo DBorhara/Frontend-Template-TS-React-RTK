@@ -37,22 +37,22 @@ export default function Login() {
 	};
 
 	return (
-		<div className='w-full flex flex-col items-center bg-white rounded px-8 pt-6 pb-8 mb-4'>
+		<div className='mb-4 flex w-full flex-col items-center rounded bg-white px-8 pb-8 pt-6'>
 			<form
-				className='bg-white w-full md:w-3/12 shadow-md rounded px-8 pt-6 pb-8 mb-4'
+				className='mb-4 w-full rounded bg-white px-8 pb-8 pt-6 shadow-md md:w-3/12'
 				onSubmit={handleLoginSubmit}
 				name='login'
 			>
 				<div className='mb-4'>
 					<label
-						className='block text-gray-700 text-sm font-bold mb-2'
+						className='mb-2 block text-sm font-bold text-gray-700'
 						htmlFor='email'
 					>
 						Email
 					</label>
 					<input
 						autoComplete='email'
-						className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+						className='focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none'
 						type='text'
 						placeholder='email'
 						name='email'
@@ -61,36 +61,36 @@ export default function Login() {
 				</div>
 				<div className='mb-6'>
 					<label
-						className='block text-gray-700 text-sm font-bold mb-2'
+						className='mb-2 block text-sm font-bold text-gray-700'
 						htmlFor='password'
 					>
 						Password
 					</label>
 					<input
 						autoComplete='current-password'
-						className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline'
+						className='focus:shadow-outline mb-3 w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none'
 						type='password'
 						placeholder='password'
 						name='password'
 						onChange={handleInputChange}
 					/>
 				</div>
-				<div className='flex items-center justify-between mb-5'>
+				<div className='mb-5 flex items-center justify-between'>
 					<button
-						className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full'
+						className='w-full rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700'
 						type='submit'
 					>
 						Login
 					</button>
 				</div>
 				{error && (
-					<div className='text-red-500 border border-red-600 p-2 rounded mb-5'>
+					<div className='mb-5 rounded border border-red-600 p-2 text-red-500'>
 						{error.message}
 					</div>
 				)}
 				<div className='flex'>
 					<a
-						className='flex flex-wrap justify-center border bg-blue-300 hover:bg-blue-400 focus:bg-red-300  text-black font-bold py-2 px-4 rounded w-full text-center'
+						className='flex w-full flex-wrap justify-center rounded border bg-blue-300  px-4 py-2 text-center font-bold text-black hover:bg-blue-400 focus:bg-red-300'
 						href={`${
 							process.env.NODE_ENV === 'development'
 								? process.env.REACT_APP_LOCAL_BACKEND_URL

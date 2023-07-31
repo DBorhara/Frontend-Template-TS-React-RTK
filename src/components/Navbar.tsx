@@ -15,7 +15,7 @@ interface NavButtonProps {
 const NavButton: React.FC<NavButtonProps> = ({ label, action }) => (
 	<button
 		onClick={action}
-		className='block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4'
+		className='mr-4 mt-4 block text-teal-200 hover:text-white lg:mt-0 lg:inline-block'
 	>
 		{label}
 	</button>
@@ -36,13 +36,13 @@ const Navbar: React.FC<NavbarProps> = ({ isLoggedIn }) => {
 		  ];
 
 	return (
-		<nav className='flex items-center justify-between flex-wrap bg-slate-500 p-6'>
-			<div className='flex items-center flex-shrink-0 text-white mr-6'>
-				<span className='font-semibold text-xl tracking-tight'>
+		<nav className='flex flex-wrap items-center justify-between bg-slate-500 p-6'>
+			<div className='mr-6 flex flex-shrink-0 items-center text-white'>
+				<span className='text-xl font-semibold tracking-tight'>
 					Front-End Template
 				</span>
 			</div>
-			<div className='w-full block flex-grow lg:flex lg:items-center lg:w-auto'>
+			<div className='block w-full flex-grow lg:flex lg:w-auto lg:items-center'>
 				<div className='text-sm lg:flex-grow'>
 					{buttons.map((button, index) => (
 						<NavButton key={index} {...button} />
