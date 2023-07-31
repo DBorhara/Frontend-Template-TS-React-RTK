@@ -1,12 +1,21 @@
 import { configureStore } from '@reduxjs/toolkit'
 import userReducer from './slices/user'
+import {
+  loadFromSessionStorage,
+  sessionStorageMiddleware
+} from '../Utils/sessionStorage'
+
+const persistedState = loadFromSessionStorage()
 
 // Configures and creates the Redux store
 const store = configureStore({
   reducer: {
     // Mapping our userReducer to the 'user' slice of our state
     user: userReducer
-  }
+  },
+  preloadedState: persistedState,
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware().concat(sessionStorageMiddleware)
 })
 
 // Type of the whole Redux store state
