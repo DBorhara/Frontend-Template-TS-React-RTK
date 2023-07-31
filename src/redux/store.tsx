@@ -1,12 +1,12 @@
-import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./slices/user";
+import { configureStore } from '@reduxjs/toolkit';
+import userReducer from './slices/user';
 
 // Configures and creates the Redux store
 const store = configureStore({
-  reducer: {
-    // Mapping our userReducer to the 'user' slice of our state
-    user: userReducer,
-  },
+	reducer: {
+		// Mapping our userReducer to the 'user' slice of our state
+		user: userReducer,
+	},
 });
 
 // Type of the whole Redux store state

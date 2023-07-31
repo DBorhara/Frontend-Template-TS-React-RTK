@@ -1,15 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import { Provider } from "react-redux";
-import store from "./redux/store";
-import { BrowserRouter as Router } from "react-router-dom";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import { Provider } from 'react-redux';
+import store from './redux/store';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 /**
  * Select the root div where the React app will be attached.
  */
-const rootElement = document.getElementById("root") as HTMLElement;
+const rootElement = document.getElementById('root') as HTMLElement;
 
 /**
  * Create a root using ReactDOM.createRoot() for Concurrent Mode rendering.
@@ -27,11 +27,11 @@ const root = ReactDOM.createRoot(rootElement);
  * Wrap the application in <Provider> and pass the Redux store to make it available to all component.
  */
 root.render(
-  <React.StrictMode>
-    <Router>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </Router>
-  </React.StrictMode>
+	<React.StrictMode>
+		<Router>
+			<Provider store={store}>
+				<App />
+			</Provider>
+		</Router>
+	</React.StrictMode>
 );
