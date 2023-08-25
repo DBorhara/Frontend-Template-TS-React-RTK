@@ -1,5 +1,10 @@
 // Import necessary libraries and types
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import {
+  createSlice,
+  createAsyncThunk,
+  PayloadAction,
+  createSelector
+} from '@reduxjs/toolkit'
 import type { RootState } from '../store'
 import axios from 'axios'
 
@@ -10,6 +15,7 @@ if (process.env.NODE_ENV === 'development') {
 } else {
   axios.defaults.baseURL = process.env.REACT_APP_REMOTE_BACKEND_URL
 }
+
 interface CustomError {
   name: string
   message: string
@@ -183,6 +189,10 @@ const userSlice = createSlice({
       })
   }
 })
+
+const user = (state: RootState) => state.user
+
+export const userSelector = createSelector([user], user => user.data)
 
 // Export thunks, types, and reducer
 export { login, signup, logout, me }

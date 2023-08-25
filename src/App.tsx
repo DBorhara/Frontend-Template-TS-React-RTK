@@ -24,12 +24,15 @@ const App: React.FC = () => {
    * The empty dependency array ensures this only runs once on mount, and not on subsequent rerenders.
    */
   useEffect(() => {
-    // Dispatch 'me' action and add error handling
-    dispatch(me()).catch(error => {
-      // Log the error or handle it as needed
-      console.error('Failed to fetch user data: ', error)
-    })
-  }, [dispatch])
+    if (isLoggedIn) {
+      // Dispatch 'me' action and add error handling
+      dispatch(me()).catch(error => {
+        // Log the error or handle it as needed
+        console.error('Failed to fetch user data: ', error)
+        throw new Error(error)
+      })
+    }
+  }, [dispatch, isLoggedIn])
 
   return (
     <>

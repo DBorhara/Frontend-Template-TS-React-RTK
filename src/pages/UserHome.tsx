@@ -1,5 +1,6 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { userSelector } from '../redux/slices/user'
+import { useAppSelector } from '../redux/hooks'
 
 interface UserInfoProps {
   label: string
@@ -14,7 +15,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ label, value }) => (
 )
 
 export default function UserHome() {
-  const { email, isAdmin } = useSelector((state: any) => state.user.data)
+  const { email, isAdmin } = useAppSelector(userSelector)
 
   return (
     <div className="mb-4 flex w-full flex-col items-center rounded bg-white px-8 pb-8 pt-6 shadow-lg">
