@@ -1,60 +1,56 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { logout } from "../redux/slices/user";
-import { useAppDispatch } from "../redux/hooks";
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import { logout } from '../redux/slices/user'
+import { useAppDispatch } from '../redux/hooks'
 
-/**
- * Interface for Navbar component props
- */
 interface NavbarProps {
-  isLoggedIn: boolean;
+  isLoggedIn: boolean
 }
 
-/**
- * Navbar component.
- *
- * Depending on whether the user is logged in or not,
- * it shows either login/signup buttons or a home/logout buttons.
- *
- * @param {NavbarProps} props - The props that define whether the user is logged in.
- */
+interface NavButtonProps {
+  label: string
+  action: () => void
+}
+
+const NavButton: React.FC<NavButtonProps> = ({ label, action }) => (
+  <button
+    onClick={action}
+    className="mr-4 mt-4 block text-teal-200 hover:text-white lg:mt-0 lg:inline-block"
+  >
+    {label}
+  </button>
+)
+
 const Navbar: React.FC<NavbarProps> = ({ isLoggedIn }) => {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
-  /**
-   * If the user is logged in, show the 'Home' and 'Logout' buttons.
-   * Clicking 'Home' navigates to the /home route.
-   * Clicking 'Logout' dispatches the logout action.
-   */
-  if (isLoggedIn) {
-    return (
-      <div>
-        <button type="button" onClick={() => navigate("/home")}>
-          Home
-        </button>
-        <button type="button" onClick={() => dispatch(logout())}>
-          Logout
-        </button>
-      </div>
-    );
-  }
+  const buttons = isLoggedIn
+    ? [
+        { label: 'Home', action: () => navigate('/home') },
+        { label: 'Log Out', action: () => dispatch(logout()) }
+      ]
+    : [
+        { label: 'Login', action: () => navigate('/login') },
+        { label: 'Sign Up', action: () => navigate('/signup') }
+      ]
 
-  /**
-   * If the user is not logged in, show the 'Log In' and 'Sign Up' buttons.
-   * Clicking 'Log In' navigates to the /login route.
-   * Clicking 'Sign Up' navigates to the /signup route.
-   */
   return (
-    <div>
-      <button type="button" onClick={() => navigate("/login")}>
-        Log In
-      </button>
-      <button type="button" onClick={() => navigate("/signup")}>
-        Sign Up
-      </button>
-    </div>
-  );
-};
+    <nav className="flex flex-wrap items-center justify-between bg-slate-500 p-6">
+      <div className="mr-6 flex flex-shrink-0 items-center text-white">
+        <span className="text-xl font-semibold tracking-tight">
+          Front-End Template
+        </span>
+      </div>
+      <div className="block w-full flex-grow lg:flex lg:w-auto lg:items-center">
+        <div className="text-sm lg:flex-grow">
+          {buttons.map((button, index) => (
+            <NavButton key={index} {...button} />
+          ))}
+        </div>
+      </div>
+    </nav>
+  )
+}
 
-export default Navbar;
+export default Navbar

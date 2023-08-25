@@ -1,79 +1,130 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import { useAppDispatch } from "../redux/hooks";
-import { login } from "../redux/slices/user";
+import React, { useState, FormEvent, ChangeEvent } from 'react'
+import { useAppDispatch } from '../redux/hooks'
+import { login } from '../redux/slices/user'
 
-// Define a CustomError interface to handle any errors that may occur during login
 interface CustomError {
-  name: string;
-  message: string;
-  code: string;
+  name: string
+  message: string
+  code: string
 }
 
-// The Login component handles the user login process
+interface FormState {
+  email: string
+  password: string
+}
+
 export default function Login() {
-  // Use useState hook for form inputs and error handling
-  const [error, setError] = useState<CustomError | null>(null);
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<CustomError | null>(null)
+  const [formState, setFormState] = useState<FormState>({
+    email: '',
+    password: ''
+  })
 
-  // useAppDispatch hook to dispatch actions
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
-  // Function to handle form submission
   const handleLoginSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
-      // Dispatch login action with email and password
-      await dispatch(login({ email, password })).unwrap();
+      await dispatch(login(formState)).unwrap()
     } catch (error: any) {
-      // Set the error if login fails
-      setError(error);
+      setError(error)
     }
-  };
+  }
 
-  // Function to handle input change
-  const handleInputChange =
-    (setter: React.Dispatch<React.SetStateAction<string>>) =>
-    (e: ChangeEvent<HTMLInputElement>) => {
-      setter(e.target.value);
-    };
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setFormState({ ...formState, [e.target.name]: e.target.value })
+  }
 
   return (
-    <div>
-      <form onSubmit={handleLoginSubmit} name="login">
-        <div>
-          <label htmlFor="email">Email</label>
+    <div className="mb-4 flex w-full flex-col items-center rounded bg-white px-8 pb-8 pt-6">
+      <form
+        className="mb-4 w-full rounded bg-white px-8 pb-8 pt-6 shadow-md md:w-3/12"
+        onSubmit={handleLoginSubmit}
+        name="login"
+      >
+        <div className="mb-4">
+          <label
+            className="mb-2 block text-sm font-bold text-gray-700"
+            htmlFor="email"
+          >
+            Email
+          </label>
           <input
+            autoComplete="email"
+            className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
             type="text"
             placeholder="email"
             name="email"
-            onChange={handleInputChange(setEmail)}
+            onChange={handleInputChange}
           />
         </div>
-        <div>
-          <label htmlFor="password">Password</label>
+        <div className="mb-6">
+          <label
+            className="mb-2 block text-sm font-bold text-gray-700"
+            htmlFor="password"
+          >
+            Password
+          </label>
           <input
+            autoComplete="current-password"
+            className="focus:shadow-outline mb-3 w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
             type="password"
             placeholder="password"
             name="password"
-            onChange={handleInputChange(setPassword)}
+            onChange={handleInputChange}
           />
         </div>
-        <div>
-          <button type="submit">Login</button>
+        <div className="mb-5 flex items-center justify-between">
+          <button
+            className="w-full rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700"
+            type="submit"
+          >
+            Login
+          </button>
         </div>
-        {error && <div> {error.message} </div>}
+        {error && (
+          <div className="mb-5 rounded border border-red-600 p-2 text-red-500">
+            {error.message}
+          </div>
+        )}
+        <div className="flex">
+          <a
+            className="flex w-full flex-wrap justify-center rounded border bg-blue-300  px-4 py-2 text-center font-bold text-black hover:bg-blue-400 focus:bg-red-300"
+            href={`${
+              process.env.NODE_ENV === 'development'
+                ? process.env.REACT_APP_LOCAL_BACKEND_URL
+                : process.env.REACT_APP_REMOTE_BACKEND_URL
+            }/auth/google`}
+          >
+            Log in with
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 600 250"
+              width="150"
+              height="40"
+            >
+              <g strokeWidth="16" fill="none">
+                <path
+                  d="M173 102a51 51 0 1 1-13-30m20 37h-53"
+                  stroke="#4a87ee"
+                />
+                <circle cx="227" cy="128" r="32" stroke="#d83038" />
+                <circle cx="313" cy="128" r="32" stroke="#f4c022" />
+                <path
+                  d="M401 160a31 31 0 1 1 0-61m-4 0a24 29 0 1 1 0 61m26-67v79m-1-12a20 20 0 1 1-52 17"
+                  stroke="#4a87ee"
+                />
+                <path stroke="#4ab95a" d="M449 51v115" />
+                <path
+                  d="M529 118a30 30 0 1 0-2 24m5-32l-62 28"
+                  stroke="#d83038"
+                />
+              </g>
+            </svg>
+          </a>
+        </div>
       </form>
-      <a
-        href={`${
-          process.env.NODE_ENV === "development"
-            ? process.env.REACT_APP_LOCAL_BACKEND_URL
-            : process.env.REACT_APP_REMOTE_BACKEND_URL
-        }/auth/google`}
-      >
-        Log in with Google
-      </a>
     </div>
-  );
+  )
 }
